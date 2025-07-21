@@ -1,0 +1,37 @@
+deployment:
+  hooks:
+    pre: |
+      echo "Before deployment general"
+    post: |
+      echo "After deployment general"
+    pre-install: |
+      echo "Before running system:install"
+    post-install: |
+      echo "After running system:install"
+    pre-update: |
+      echo "Before running system:update"
+    post-update: |
+      echo "After running system:update"
+
+  # Automatically installs and updates all extensions included in custom/plugins and custom/apps and composer
+  extension-management:
+    enabled: true
+
+    # These extensions are not managed, you should use one-time-tasks to manage them
+#    exclude:
+#      - SwagAmazonPay
+
+  store:
+    license-domain: '%LICENSE_DOMAIN%'
+
+dump:
+  nodata:
+    - add_tables_dsgvo
+    - cleverreach_entity
+    - cleverreach_archived_entity
+    - cbax_analytics_invoice_date
+    - cbax_analytics_category_impressions
+    - cbax_analytics_product_impressions
+    - cbax_analytics_manufacturer_impressions
+  where:
+    order: 'order_date > 2025-07-01'
