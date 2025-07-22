@@ -7,10 +7,11 @@ on:
         type: string
         description: Environment for Deployment
 
+
 jobs:
   build:
     if: ${{ github.ref == 'refs/heads/main' }}
-    name: Build & Deploy
+    name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
