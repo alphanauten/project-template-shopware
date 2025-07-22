@@ -26,6 +26,6 @@ jobs:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: Build & Deploy
     needs: [check-secret]
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: alphanauten/project-template-shopware/.github/workflows/reusable-deploy.yml@main
     with:
       environment: "staging"
