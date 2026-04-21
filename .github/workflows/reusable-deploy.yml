@@ -1,18 +1,39 @@
 name: Deployment
+
 on:
   workflow_call:
     inputs:
       environment:
         required: true
         type: string
-        description: Environment for Deployment
+        description: Environment for deployment
 
+      php_version:
+        required: false
+        type: string
+        default: '8.3'
+        description: PHP version to install
+
+      project_ci_env:
+        required: false
+        type: string
+        default: ''
+        description: |
+          Optional env vars for `shopware-cli project ci`
+          as multiline KEY=VALUE pairs
+
+    secrets:
+      SHOPWARE_PACKAGES_TOKEN:
+        required: true
+      DEPLOYMENT_SSH_KEY:
+        required: true
 
 jobs:
   build:
     if: ${{ github.ref == 'refs/heads/main' }}
     name: ${{ inputs.environment }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,14 +41,14 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: ${{ inputs.php_version }}
 
       - name: Set personal access token for packages.shopware.com
         run: composer config bearer.packages.shopware.com "${{ secrets.SHOPWARE_PACKAGES_TOKEN }}"
 
       - name: Determine composer cache directory
         id: composer
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Load composer cache
         uses: actions/cache/restore@v4
@@ -37,6 +58,14 @@ jobs:
 
       - name: Install Shopware CLI
         uses: shopware/shopware-cli-action@v1
+
+      - name: Export project CI env vars
+        if: ${{ inputs.project_ci_env != '' }}
+        shell: bash
+        run: |
+          cat <<'EOF' >> "$GITHUB_ENV"
+          ${{ inputs.project_ci_env }}
+          EOF
 
       - name: Build
         run: shopware-cli project ci . --with-dev-dependencies
