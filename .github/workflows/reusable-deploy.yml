@@ -26,14 +26,6 @@ on:
         default: '--openssl-legacy-provider'
         description: Optional Node options for the build
 
-      project_ci_env:
-        required: false
-        type: string
-        default: ''
-        description: |
-          Optional env vars for `shopware-cli project ci`
-          as multiline KEY=VALUE pairs
-
     secrets:
       SHOPWARE_PACKAGES_TOKEN:
         required: true
