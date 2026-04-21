@@ -13,6 +13,18 @@ on:
         type: string
         default: '8.3'
         description: PHP version to install
+        
+      node_version:
+        required: false
+        type: string
+        default: '20'
+        description: Node.js version to install
+
+      node_options:
+        required: false
+        type: string
+        default: '--openssl-legacy-provider'
+        description: Optional Node options for the build
 
       project_ci_env:
         required: false
@@ -38,6 +50,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node_version }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
