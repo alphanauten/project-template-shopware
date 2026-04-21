@@ -69,15 +69,9 @@ jobs:
       - name: Install Shopware CLI
         uses: shopware/shopware-cli-action@v1
 
-      - name: Export project CI env vars
-        if: ${{ inputs.project_ci_env != '' }}
-        shell: bash
-        run: |
-          cat <<'EOF' >> "$GITHUB_ENV"
-          ${{ inputs.project_ci_env }}
-          EOF
-
       - name: Build
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: shopware-cli project ci . --with-dev-dependencies
 
       - name: Save composer cache
