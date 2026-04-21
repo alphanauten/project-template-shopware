@@ -72,7 +72,7 @@ jobs:
       - name: Build
         env:
           NODE_OPTIONS: --openssl-legacy-provider
-        run: shopware-cli project ci . --with-dev-dependencies
+        run: NODE_OPTIONS=--openssl-legacy-provider shopware-cli project ci . --with-dev-dependencies
 
       - name: Save composer cache
         uses: actions/cache/save@v4
