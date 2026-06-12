@@ -82,6 +82,8 @@ jobs:
 
       - name: Deploy
         uses: deployphp/action@v1
+        env:
+          SHOPWARE_DEPLOYMENT_TIMEOUT: 900
         with:
           dep: deploy ${{ inputs.environment }}
           private-key: ${{ secrets.DEPLOYMENT_SSH_KEY }}
