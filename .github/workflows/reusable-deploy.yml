@@ -61,7 +61,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Load composer cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ${{ steps.composer.outputs.dir }}
           key: composer-${{ hashFiles('./composer.lock') }}
@@ -75,7 +75,7 @@ jobs:
         run: NODE_OPTIONS=--openssl-legacy-provider shopware-cli project ci . --with-dev-dependencies
 
       - name: Save composer cache
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ${{ steps.composer.outputs.dir }}
           key: composer-${{ hashFiles('./composer.lock') }}
