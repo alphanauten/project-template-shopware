@@ -41,10 +41,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node_version }}
 
@@ -61,7 +61,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Load composer cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ steps.composer.outputs.dir }}
           key: composer-${{ hashFiles('./composer.lock') }}
@@ -75,7 +75,7 @@ jobs:
         run: NODE_OPTIONS=--openssl-legacy-provider shopware-cli project ci . --with-dev-dependencies
 
       - name: Save composer cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ steps.composer.outputs.dir }}
           key: composer-${{ hashFiles('./composer.lock') }}
